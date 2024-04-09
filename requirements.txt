@@ -1,0 +1,5 @@
+flask
+google-api-python-client
+sqlalchemy
+psycopg2-binary
+kafka-python

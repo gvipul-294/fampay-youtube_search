@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres_db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # zookeeper:
+  #   image: wurstmeister/zookeeper
+  #   ports:
+  #     - "2181:2181"
+
+  # kafka:
+  #   image: wurstmeister/kafka
+  #   ports:
+  #     - "9092:9092"
+  #   environment:
+  #     KAFKA_ADVERTISED_HOST_NAME: kafka
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #   depends_on:
+  #     - zookeeper
+
+  app:
+    build: .
+    environment:
+      - YOUTUBE_API_KEY=AIzaSyC_QNQlqkUgd5t4lAK1WmQzCqN2sRIUYo4
+      - DATABASE_URL=postgresql://root:root@db:5432/postgres_db #postgresDB
+      # - DATABASE_URL=sqlite:///videos.db #sqlite
+      - KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+      - KAFKA_TOPIC=latest-videos
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      # - kafka
+
+
+volumes:
+  postgres-data:
