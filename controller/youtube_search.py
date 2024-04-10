@@ -76,8 +76,8 @@ def get_videos():
 # Set up a route for the search API
 @app.route('/search', methods=['GET'])
 def search_videos():
-    title = request.args.get('title')
-    description = request.args.get('description')
+    title = request.args.get('title', '')
+    description = request.args.get('description','')
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     offset = (page - 1) * per_page
